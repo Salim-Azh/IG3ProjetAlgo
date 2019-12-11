@@ -46,7 +46,7 @@ protocol Joueur {
     mutating func SupprimerPiece (p : Piece)
     
     //Verifie si le joueur possede la piece
-    func PossedePiece (p : Piece)
+    func PossedePiece (p : Piece) -> Bool
     
     //attribue a un joueur les pieces pour démarrer (deux cylindre, deux carrés, deux spheres et deux pyramides) sous forme de liste. Recupere le numéro du joueur pour savoir quelle couleur attribuer aux pieces
     func setLotDePieces () ->  [Piece]
@@ -66,7 +66,7 @@ struct Joueur : Joueur {
         
     }
     
-    func PossedePiece (p : Piece){
+    func PossedePiece (p : Piece) ->Bool{
         
     }
     
@@ -135,7 +135,10 @@ protocol Plateau {
 
 struct Plateau : Plateau {
     
+    private var grille
+    
     init() {
+        // tableau de taille 4 pas de taille 3 On peut faire comme on veut il ne faut pas imposer
         
     }
     
@@ -147,7 +150,10 @@ struct Plateau : Plateau {
         
     }
     func Gligne(position : (Int,Int)) -> Bool {
-        
+        let l : Int = position.0
+        for i in self {
+            <#code#>
+        }
     }
     func Gcolonne(position : (Int,Int)) -> Bool {
         
