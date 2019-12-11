@@ -54,21 +54,34 @@ protocol Joueur {
 
 // Structure de donnees du type JOUEUR
 struct Joueur : Joueur {
+    private(set) var numero : Int  // declaration de la propriete numero pour un joueur
+    private(set) var description : String  // declaration de la propriete description pour un pion
+
+    init(numero : Int,description : String){ // initialisation d'un joueur qui a un numero et une description
+        self.numero = numero
+        self.description = description
+    }
+
+    mutating func SupprimerPiece (p : Piece){
+        
+    }
     
-    // declaration de la propriete forme pour un pion
-    private(set) var forme : String
+    func PossedePiece (p : Piece){
+        
+    }
     
-    // declaration de la propriete couleur pour un pion
-    private(set) var couleur : String
+    func setLotDePieces () ->  [Piece]{
+        
+    }
+    
     
     
 }
-
 //Type PLATEAU
 // Specification fonctionnelle du type PLATEAU
 protocol Plateau {
     
-    //Un plateau est un tableau (de taille 3)  de tableaux (de taille 3) de types Piece ou nul.
+    //Un plateau est un tableau (de taille 3  /NON : 4) de tableaux (de taille 3 /NON: 4) de types Piece ou nul.
     //Il est initialisé entierement à nul. On repere une position dans le tableau grace a une
     //liste de 2 int, le premier donne la colonne et le deuxieme la ligne.
     init ()
@@ -120,3 +133,23 @@ protocol Plateau {
     func Gzone (position : (Int, Int)) -> Bool
 }
 
+struct Plateau : Plateau {
+    
+    init() {
+        
+    }
+    
+    func aGagne() -> Bool {
+        return Gzone() && Gligne() && Gzone()
+    }
+    
+    func Gzone(position : (Int,Int)) -> Bool {
+        
+    }
+    func Gligne(position : (Int,Int)) -> Bool {
+        
+    }
+    func Gcolonne(position : (Int,Int)) -> Bool {
+        
+    }
+}
