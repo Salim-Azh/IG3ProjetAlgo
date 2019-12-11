@@ -60,14 +60,33 @@ struct Joueur : Joueur {
     init(numero : Int,description : String){ // initialisation d'un joueur qui a un numero et une description
         self.numero = numero
         self.description = description
+        
+        //var lotdP = self.setLotDePieces
+        //self.lotdP =
     }
 
     mutating func SupprimerPiece (p : Piece){
         
     }
     
-    func PossedePiece (p : Piece) ->Bool{
-        
+    func PossedePiece (p : Piece){
+        return (nbOccurence (pieces : self.setLotDePieces(), p : p)> 0)
+    }
+    
+    
+    
+    
+    
+    private func nbOccurence (pieces : [Piece], p : Piece) -> Int {
+        var resultat : Int = 0
+        for i in 0..< pieces.count {
+            if pieces[i] == piece {
+                resultat = resultat + 1
+            }
+    
+        }
+
+        return resultat
     }
     
     func setLotDePieces () ->  [Piece]{
