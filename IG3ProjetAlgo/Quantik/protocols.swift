@@ -190,11 +190,36 @@ protocol Plateau {
 
 struct Plateau : Plateau {
     
-    private var grille
+    private var grid : [[Piece?]]
     
     init() {
-        // tableau de taille 4 pas de taille 3 On peut faire comme on veut il ne faut pas imposer
-        
+        // tableau de taille 4 pas de taille 3 On peut faire comme on veut il ne faut pas imposer un tableau
+        self.grid = [Piece?](repeating : [Piece?](repeating : nil, count : 4), count : 4)
+    }
+    
+    func PositionsPieces () -> [(Int,Int)]{
+        var posPieces : [(Int,Int)] = []
+        for i in 0 ..< 4{
+            for j in 0 ..< 4{
+                if !estVidePos(position : (i,j))
+                posPieces.append((i,j))
+            }
+        }
+        return posPieces
+    }
+    
+    //Selon votre sepcification ont doit renvoyer une Piece ou nul mais en commentaire vous dites qu'il faut renvoyer la couleur et le type. On a choisit de renvoyer la piece
+    // Faut choisir
+    func QuellePiece(position : (Int,Int)) -> Piece? {
+        if estVidePos(position : position){
+            return nil
+        } else {
+            return self.grid[]
+        }
+    }
+    
+    func estVidePos(position : (Int,Int)) -> Bool {
+        return self.grid[position.0][position.1] == nil
     }
     
     func aGagne() -> Bool {
@@ -206,8 +231,9 @@ struct Plateau : Plateau {
     }
     func Gligne(position : (Int,Int)) -> Bool {
         let l : Int = position.0
+        
         for i in self {
-            <#code#>
+            
         }
     }
     func Gcolonne(position : (Int,Int)) -> Bool {

@@ -6,7 +6,7 @@ func demandePosition() -> (Int,Int) { //fonction qui demande la position à l'ut
 	while B == false {
 			print ( "A quelle position en x la mettre ?") // demander la position x à laquelle placer la pièce
 			if let xs = readLine() { //On recupère la valeur entrée par l'utilisateur
-				if let x = Int(xs) { //On verifie que c'est bien un entier
+				if let x = Int(xs){ //On verifie que c'est bien un entier
 					if (x == 1 || x == 2 || x == 3 || x == 0){ //la position doit être comprise entre 0 et 3
 						B = true
 						l = x
