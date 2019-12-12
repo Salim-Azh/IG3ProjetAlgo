@@ -248,7 +248,20 @@ struct Plateau : Plateau {
     }
     
     func Gligne(position : (Int,Int), p : Piece) -> Bool {
-        var d : [String: Int]
+        let l : Int = position.0
+        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        for j in 0 ..< 4 {
+            if !estVidePos(position : (l,j) {
+                var f : String = self.grid[l][j].forme
+                d[f] = d[f] + 1
+            }
+        }
+        
+        for (k,v) in d {
+            if (v != 1){
+                return false
+            }
+        }
     }
     func Gcolonne(position : (Int,Int)) -> Bool {
         
