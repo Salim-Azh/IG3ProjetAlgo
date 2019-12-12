@@ -100,14 +100,14 @@ struct Joueur : Joueur {
         return resultat
     }
     
-    func PossedePiece (p : Piece){
-        return (nbOccurence (pieces : self.pieces, p : p) > 0
+    func PossedePiece (p : Piece) {
+        return (nbOccurence (pieces : self.pieces, p : p)) > 0
     }
     
     func setLotDePieces () ->  [Piece]{
       //attribue a un joueur les pieces pour démarrer (deux cylindre, deux carrés, deux spheres et deux pyramides) sous forme de liste. Recupere le numéro du joueur pour savoir quelle couleur attribuer aux pieces
         if self.numero == 1 {
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc") )
             self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc"))
             self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
             self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
@@ -117,7 +117,7 @@ struct Joueur : Joueur {
             self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "blanc"))
             
         } else if self.numero == 2 {
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge") )
             self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge"))
             self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
             self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
@@ -200,10 +200,10 @@ struct Plateau : Plateau {
     func PositionsPieces () -> [(Int,Int)]{
         var posPieces : [(Int,Int)] = []
         for i in 0 ..< 4{
-            for j in 0 ..< 4{
-                if !estVidePos(position : (i,j))[
-                posPieces.append((i,j))
-            }
+            for j in 0 ..< 4 {
+                if !estVidePos(position : (i,j)) {
+                    posPieces.append((i,j))
+                }
         }
         return posPieces
     }
