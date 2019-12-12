@@ -71,7 +71,7 @@ struct Joueur : Joueur {
     private func getIndex (pieces : [Piece], p : Piece){
         // fonction utilitaire pour la fonction SupprimerPiece()
         // permet d'obtenir l'indice de la piece a supprimer
-        if (nbOccurence (pieces : pieces, p : p))> 0 {
+        if (nbOccurence (pieces : pieces, p : p)) > 0 {
             for i in 0..< pieces.count {
                 if pieces[i] == p {
                     return i
@@ -101,7 +101,7 @@ struct Joueur : Joueur {
     }
     
     func PossedePiece (p : Piece){
-        return (nbOccurence (pieces : self.pieces, p : p)> 0
+        return (nbOccurence (pieces : self.pieces, p : p) > 0
     }
     
     func setLotDePieces () ->  [Piece]{
@@ -201,7 +201,7 @@ struct Plateau : Plateau {
         var posPieces : [(Int,Int)] = []
         for i in 0 ..< 4{
             for j in 0 ..< 4{
-                if !estVidePos(position : (i,j))
+                if !estVidePos(position : (i,j))[
                 posPieces.append((i,j))
             }
         }
