@@ -72,7 +72,7 @@ struct Joueur : Joueur {
         // fonction utilitaire pour la fonction SupprimerPiece()
         // permet d'obtenir l'indice de la piece a supprimer
         if (nbOccurence (pieces : pieces, p : p)) > 0 {
-            for i in 0..< pieces.count {
+            for (i in 0..< pieces.count) {
                 if pieces[i] == p {
                     return i
                 }
@@ -92,7 +92,7 @@ struct Joueur : Joueur {
         //fonction utilitaire pour la fonction PossedePiece()
         // compte le nombre d'occurences de la piece passee en parametre dans l'ensemble des pieces
         var resultat : Int = 0
-        for i in 0..< pieces.count {
+        for (i in 0..< pieces.count) {
             if pieces[i] == piece {
                 resultat = resultat + 1
             }
@@ -107,24 +107,24 @@ struct Joueur : Joueur {
     func setLotDePieces () ->  [Piece]{
       //attribue a un joueur les pieces pour démarrer (deux cylindre, deux carrés, deux spheres et deux pyramides) sous forme de liste. Recupere le numéro du joueur pour savoir quelle couleur attribuer aux pieces
         if self.numero == 1 {
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc") )
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "blanc"))
-            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Cylindre", couleur : "blanc") )
+            self.pieces = self.pieces.append(Piece(forme : "Cylindre", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Carre", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Carre", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Sphere", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Sphere", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Pyramide", couleur : "blanc"))
+            self.pieces = self.pieces.append(Piece(forme : "Pyramide", couleur : "blanc"))
             
         } else if self.numero == 2 {
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge") )
-            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "rouge"))
-            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Cylindre", couleur : "rouge") )
+            self.pieces = self.pieces.append(Piece(forme : "Cylindre", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Carre", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Carre", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Sphere", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Sphere", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Pyramide", couleur : "rouge"))
+            self.pieces = self.pieces.append(Piece(forme : "Pyramide", couleur : "rouge"))
             
         }
         
