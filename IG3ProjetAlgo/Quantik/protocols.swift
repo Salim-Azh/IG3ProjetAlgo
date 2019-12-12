@@ -140,7 +140,7 @@ protocol Plateau {
     //Il est initialisé entierement à nul. On repere une position dans le tableau grace a une
     //liste de 2 int, le premier donne la colonne et le deuxieme la ligne.
     init ()
-
+    
     //Renvoie l'ensemble des positions où il y a une piece
     func PositionsPieces () -> [(Int, Int)]
     
@@ -150,22 +150,22 @@ protocol Plateau {
     //Verifie si le joueur peut placer la piece c'est a dire :les fonctions estVidePos, Pcolonne, Psection et Pligne
     // renvoient true et la fonction PossedePiece renvoie true. Si tout ca est possible, modifie le plateau et place
     // la piece a la position donnée. Renvoie false et ne modifie rien sinon.
-    mutating func place (position : (Int, Int)) -> Bool
+    mutating func place (position : (Int, Int), piece : Piece, joueur : Joueur) -> Bool
     
     //Renvoie true si la position selectionée est vide
     func estVidePos (position : (Int,Int)) -> Bool
     
     //Si il y a une piece de couleur differente et de meme forme dans
     //la colonne renvoie false, true sinon
-    func Pcolonne (position : (Int, Int)) -> Bool
+    func Pcolonne (position : (Int, Int), p : Piece) -> Bool
     
     //Si il y a une piece de couleur differente et de meme forme dans la ligne
     //renvoie false, true sinon
-    func Pligne (position : (Int, Int)) -> Bool
+    func Pligne (position : (Int, Int), p : Piece) -> Bool
     
     //Si il y a une piece de couleur differente et de meme forme dans la zone
     //(il y a 4 zone, c'est un carré de 2*2) renvoie false, true sinon
-    func Pzone (position : (Int, Int)) -> Bool
+    func Pzone (position : (Int, Int), p : Piece) -> Bool
     
     //Verifie les pieces disponibles du joueur et si il peut en placer
     //au moins une, revoie true, false sinon
@@ -177,15 +177,15 @@ protocol Plateau {
     
     //Si il ya a 4 pieces de forme differentes dans la colonne, renvoie
     //true, false sinon
-    func Gcolonne (position : (Int, Int)) -> Bool
+    func Gcolonne (position : (Int, Int), p : Piece) -> Bool
     
     //Si il ya a 4 pieces de forme differentes dans la ligne,
     //renvoie true, false sinon
-    func Gligne (position : (Int, Int)) -> Bool
+    func Gligne (position : (Int, Int), p : Piece) -> Bool
     
     //Si il ya a 4 pieces de forme differentes dans la zone,
     //renvoie true, false sinon
-    func Gzone (position : (Int, Int)) -> Bool
+    func Gzone (position : (Int, Int), p : Piece) -> Bool
 }
 
 struct Plateau : Plateau {
@@ -208,16 +208,27 @@ struct Plateau : Plateau {
         return posPieces
     }
     
-    //Selon votre sepcification ont doit renvoyer une Piece ou nul mais en commentaire vous dites qu'il faut renvoyer la couleur et le type. On a choisit de renvoyer la piece
-    // Faut choisir
+        //Selon votre sepcification ont doit renvoyer une Piece ou nul mais en commentaire vous dites qu'il faut renvoyer la couleur et le type. On a choisit de renvoyer la piece
+        // Faut choisir
+        // Ne sert a rien jamais utilisee
     func QuellePiece(position : (Int,Int)) -> Piece? {
-        if estVidePos(position : position){
+        if estVidePos(position : position) {
             return nil
         } else {
-            return self.grid[]
+            return self.grid[position.0][position.1]
         }
     }
     
+        //Peutjouer() ou place() il faut choisir ou faire la verification. Ca ne sert a rien de faire 2 fois
+    mutating func place (position : (Int, Int), piece : Piece, joueur : Joueur) -> Bool {
+        if estVidePos(position : position) && Pzone(position : position) && Pligne(postion : position) && Pcolonne(position : position) && j.PossedePiece(p : piece) {
+            self.grid[postion.0][position.1] = piece
+            return true
+        }else {
+            return false
+        }
+    }
+        
     func estVidePos(position : (Int,Int)) -> Bool {
         return self.grid[position.0][position.1] == nil
     }
@@ -251,6 +262,21 @@ struct Plateau : Plateau {
         for (j in 0..<4){
             if (!estVidePos(position : position)) ) {
                 if (self.grid[l][j].couleur == pcolor && self.grid[l][j].forme == pforme){
+                    ok = false
+                }
+            }
+        }
+        return ok
+    }
+        
+    func Pcolonne (position : (Int, Int), p : Piece) -> Bool {
+        var ok : Bool = true
+        let c : Int = position.1
+        let pforme : String = p.forme
+        let pcolor : String = p.couleur
+        for i in 0 ..< 4 {
+            if !estVidePos(position : position) {
+                if self.grid[i][c].couleur == pcolor && self.grid[i][c].forme == pforme {
                     ok = false
                 }
             }
