@@ -72,7 +72,7 @@ struct Joueur : Joueur {
         // fonction utilitaire pour la fonction SupprimerPiece()
         // permet d'obtenir l'indice de la piece a supprimer
         if (nbOccurence (pieces : pieces, p : p)) > 0 {
-            for (i in 0..< pieces.count) {
+            for (i in 0..< pieces.count){
                 if pieces[i] == p {
                     return i
                 }
@@ -92,7 +92,7 @@ struct Joueur : Joueur {
         //fonction utilitaire pour la fonction PossedePiece()
         // compte le nombre d'occurences de la piece passee en parametre dans l'ensemble des pieces
         var resultat : Int = 0
-        for (i in 0..< pieces.count) {
+        for (i in 0..< pieces.count){
             if pieces[i] == piece {
                 resultat = resultat + 1
             }
@@ -221,6 +221,12 @@ struct Plateau : Plateau {
     func estVidePos(position : (Int,Int)) -> Bool {
         return self.grid[position.0][position.1] == nil
     }
+        
+    //Verifie les pieces disponibles du joueur et si il peut en placer
+    //au moins une, revoie true, false sinon
+    func peutJouer (j : Joueur) -> Bool {
+    
+    }
     
     func aGagne() -> Bool {
         return Gzone() && Gligne() && Gzone()
@@ -229,14 +235,26 @@ struct Plateau : Plateau {
     func Gzone(position : (Int,Int)) -> Bool {
         
     }
-    func Gligne(position : (Int,Int)) -> Bool {
-        let l : Int = position.0
-        
-        for i in self {
-            
-        }
+    
+    func Gligne(position : (Int,Int), p : Piece) -> Bool {
+        var d : [String: Int]
     }
     func Gcolonne(position : (Int,Int)) -> Bool {
         
+    }
+
+    func Pligne (position : (Int, Int), p : Piece) -> Bool{
+        var ok : Bool = true
+        let l : Int = position.0
+        let pforme : String = p.forme
+        let pcolor : String = p.couleur
+        for (j in 0..<4){
+            if (!estVidePos(position : position)) ) {
+                if (self.grid[l][j].couleur == pcolor && self.grid[l][j].forme == pforme){
+                    ok = false
+                }
+            }
+        }
+        return ok
     }
 }
