@@ -34,13 +34,16 @@ struct Piece : Piece{
 protocol Joueur {
     
     //Recupere le numéro du joueur
-    var numero : Int { get } 
+    var numero : Int { get }
     
     //Renvoie la liste des pieces dispo pour le joueur sous forme de String
     var description : String { get }
     
+    //Renvoie la liste des pieces dispo pour le joueur sous forme de tableau
+    var pieces : [Piece] { get set }
+    
     //Un joueur est definit par un numéro de joueur et un lot de pieces, la fonction init fait donc appel a SetLotDePieces. Le joueur 1 aura automatiquement les blancs et le 2 les rouges.
-    init(numero : Int /*,description : String ?????????? */)
+    init(numero : Int ,description : String, pieces : [Piece])
     
     //Supprime la piece du lot de piece du joueur
     mutating func SupprimerPiece (p : Piece)
@@ -56,44 +59,77 @@ protocol Joueur {
 struct Joueur : Joueur {
     private(set) var numero : Int  // declaration de la propriete numero pour un joueur
     private(set) var description : String  // declaration de la propriete description pour un pion
-
+    private(set) var pieces : [Piece]  // declaration de la propriete pieces pour un pion
+    
+    
     init(numero : Int,description : String){ // initialisation d'un joueur qui a un numero et une description
         self.numero = numero
         self.description = description
-        
-        //var lotdP = self.setLotDePieces
-        //self.lotdP =
+        self.pieces = pieces
     }
 
+    private func getIndex (pieces : [Piece], p : Piece){
+        // fonction utilitaire pour la fonction SupprimerPiece()
+        // permet d'obtenir l'indice de la piece a supprimer
+        if (nbOccurence (pieces : pieces, p : p))> 0 {
+            for i in 0..< pieces.count {
+                if pieces[i] == p {
+                    return i
+                }
+            }
+        }
+    }
+    
     mutating func SupprimerPiece (p : Piece){
-        
+        if self.PossedePiece(p : p) {
+            self.pieces = self.pieces.remove(at : getIndex (pieces : self.pieces, p : p) )
+        }
     }
-    
-    func PossedePiece (p : Piece){
-        return (nbOccurence (pieces : self.setLotDePieces(), p : p)> 0)
-    }
-    
-    
     
     
     
     private func nbOccurence (pieces : [Piece], p : Piece) -> Int {
+        //fonction utilitaire pour la fonction PossedePiece()
+        // compte le nombre d'occurences de la piece passee en parametre dans l'ensemble des pieces
         var resultat : Int = 0
         for i in 0..< pieces.count {
             if pieces[i] == piece {
                 resultat = resultat + 1
             }
-    
         }
-
         return resultat
     }
     
-    func setLotDePieces () ->  [Piece]{
-        
+    func PossedePiece (p : Piece){
+        return (nbOccurence (pieces : self.pieces, p : p)> 0
     }
     
-    
+    func setLotDePieces () ->  [Piece]{
+      //attribue a un joueur les pieces pour démarrer (deux cylindre, deux carrés, deux spheres et deux pyramides) sous forme de liste. Recupere le numéro du joueur pour savoir quelle couleur attribuer aux pieces
+        if self.numero == 1 {
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "blanc"))
+            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "blanc"))
+            
+        } else if self.numero == 2 {
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Cylindre", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Carre", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Sphere", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "rouge"))
+            self.pieces = self.pieces.append(init(forme : "Pyramide", couleur : "rouge"))
+            
+        }
+        
+        return self.pieces
+    }
     
 }
 //Type PLATEAU
