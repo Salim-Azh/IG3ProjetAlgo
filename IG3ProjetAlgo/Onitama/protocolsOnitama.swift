@@ -161,7 +161,7 @@ protocol Player {
     // - ses pions : un joueur possede une collection de pions,
     // - ses cartes : un joueur possede une collection de cartes,
     // isWinner initialisé a false
-    init (color : String, pieces : [Piece], cards : [Card]) 
+    init (color : String, pieces : [Piece], cards : [Card])
 
     // color : Player -> Text
     // retourne la couleur d'un joueur donné dans le jeu en rouge et bleu
