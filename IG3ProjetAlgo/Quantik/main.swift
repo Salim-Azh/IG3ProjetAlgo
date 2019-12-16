@@ -60,9 +60,9 @@ while (fin == false) { // tant qu'il n'y a pas de gagnant
         print(Joueur1.description) // renvoi la description des pièces du joueur1
         var piece : Piece = (forme : demandeForme(), couleur : "blanc") // on crée la pièce que le joueur veut jouer.
         var positionD : (Int,Int) = demandePosition()
-        if place(position : positionD, p : piece) == true { //si le joueur a pu placer sa pièce où il voulait
+        if plateau.place(position : positionD, p : piece) == true { //si le joueur a pu placer sa pièce où il voulait
             Joueur1.supprimerPiece(p : piece) //on supprime sa pièce de son lot car il ne pourra plus la jouer
-            if aGagne(position : positionD, j_adverse : Joueur2){  //on vérifie si il a gagné le jeu
+            if plateau.aGagne(position : positionD, j_adverse : Joueur2){  //on vérifie si il a gagné le jeu
                 fin = true
                 gagnant = 1
             }
@@ -76,9 +76,9 @@ while (fin == false) { // tant qu'il n'y a pas de gagnant
         print(Joueur2.description)
         var piece : Piece = (forme : demandeForme(), couleur : "rouge")
         var positionD : (Int,Int) = demandePosition()
-        if place(position : positionD, p : piece) == true {
+        if plateau.place(position : positionD, p : piece) == true {
             Joueur2.supprimerPiece(p : Piece)
-            if aGagne(position : positionD, j_adverse : Joueur1){
+            if plateau.aGagne(position : positionD, j_adverse : Joueur1){
                 fin = true
                 gagnant = 2
             }
@@ -89,5 +89,4 @@ while (fin == false) { // tant qu'il n'y a pas de gagnant
         }
     }
 }
-
 print ("Le gagnant est le joueur ", gagnant) // affiche le joueur qui a gagné

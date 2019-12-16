@@ -261,7 +261,9 @@ struct Plateau : Plateau {
     
     func Pligne (position : (Int, Int), p : Piece) -> Bool{
         var ok : Bool = true
+        // ligne testee
         let l : Int = position.0
+        // forme et couleur de la piece testee
         let pforme : String = p.forme
         let pcolor : String = p.couleur
         for j in 0 ..< 4 {
@@ -271,7 +273,7 @@ struct Plateau : Plateau {
                 }
             }
         }
-        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la colonne retourne false
+        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la ligne retourne false
         return ok
     }
     
@@ -297,7 +299,7 @@ struct Plateau : Plateau {
                 }
             }
         }
-        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la colonne retourne false
+        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la zone retourne false
         return ok
     }
     
@@ -321,17 +323,20 @@ struct Plateau : Plateau {
     // Gligne et Gcolonne.
     // Ajout de j_adverse sinon on peut pas tester si le joueur adverse ne peut pas jouer.
     func aGagne(position : (Int,Int) j_adverse : Joueur) -> Bool {
+        // Si le joueur gagne sur une ligne ou colonne ou zone ou que son adversaire ne peut plus jouer alorson retourne vrai
         return Gzone(position : position) || Gligne(position : position) || Gzone(position : position) || !peutJouer(j : j_adverse)
     }
     
-    func Gcolonne(position : (Int,Int), p : Piece) -> Bool {
+    // si tous on a la valeur 1 pour chaque cle du dictionnaire declare ci-dessous alors on retourne vrai sinon faux
+    func Gcolonne(position : (Int,Int)) -> Bool {
         var ok : Bool = true
         let c : Int = position.1
-        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        // d va contenir les occurences des formes dans la colonne
+        var d : [String : Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
         for i in 0 ..< 4 {
             if !estVidePos(position : (i,c)) {
                 var f : String = self.grid[i][c].forme
-                d[f] = d[f] + 1
+                d[f] = d[f] + 1 // On ajoute un pour la cle f
             }
         }
         for (k,v) in d {
@@ -345,14 +350,13 @@ struct Plateau : Plateau {
     func Gligne(position : (Int,Int)) -> Bool {
         var ok : Bool = true
         let l : Int = position.0
-        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        var d : [String : Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
         for j in 0 ..< 4 {
             if !estVidePos(position : (l,j)) {
                 var f : String = self.grid[l][j].forme
                 d[f] = d[f] + 1
             }
         }
-        
         for (k,v) in d {
             if (v != 1){
                 ok = false
@@ -365,13 +369,13 @@ struct Plateau : Plateau {
         var ok : Bool = true
         var x : Int = position.0
         var y : Int = position.1
-        x = x - x%2
-        y = y - y%2
-        
+        x = x - x%2 //on se place a l'abscisse de debut de zone
+        y = y - y%2 // on se place a l'ordonnee de debut de zone
+        // abscisse et ordonnee de fin de parcour de la zone
         let endX : Int = x + 2
         let endY : Int = y + 2
         
-        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        var d : [String : Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
         
         for i in x ..< endX {
             for j in y ..< endY {
