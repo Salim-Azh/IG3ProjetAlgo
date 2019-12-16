@@ -236,7 +236,40 @@ struct Plateau : Plateau {
     func estVidePos(position : (Int,Int)) -> Bool {
         return self.grid[position.0][position.1] == nil
     }
+    
+    func Pcolonne (position : (Int, Int), p : Piece) -> Bool {
+        var ok : Bool = true
+        let c : Int = position.1
+        let pforme : String = p.forme
+        let pcolor : String = p.couleur
+        for i in 0 ..< 4 {
+            if !estVidePos(position : position) {
+                if self.grid[i][c].couleur == pcolor && self.grid[i][c].forme == pforme {
+                    ok = false
+                }
+            }
+        }
+        return ok
+    }
+    
+    func Pligne (position : (Int, Int), p : Piece) -> Bool{
+        var ok : Bool = true
+        let l : Int = position.0
+        let pforme : String = p.forme
+        let pcolor : String = p.couleur
+        for j in 0 ..< 4 {
+            if !estVidePos(position : position)  {
+                if (self.grid[l][j].couleur == pcolor && self.grid[l][j].forme == pforme){
+                    ok = false
+                }
+            }
+        }
+        return ok
+    }
+    
+    func Pzone (position : (Int, Int), p : Piece) -> Bool {
         
+    }
     //Verifie les pieces disponibles du joueur et si il peut en placer
     //au moins une, revoie true, false sinon
     func peutJouer (j : Joueur) -> Bool {
@@ -246,6 +279,31 @@ struct Plateau : Plateau {
     func aGagne() -> Bool {
         return (Gzone() && Gligne() && Gzone()) || !peutJouer()
     }
+    
+    func Gcolonne(position : (Int,Int)) -> Bool {
+        
+    }
+    
+    func Gligne(position : (Int,Int), p : Piece) -> Bool {
+        var ok : Bool = true
+        let l : Int = position.0
+        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        for j in 0 ..< 4 {
+            if !estVidePos(position : (l,j)) {
+                var f : String = self.grid[l][j].forme
+                d[f] = d[f] + 1
+            }
+        }
+        
+        for (k,v) in d {
+            if (v != 1){
+                ok = false
+            }
+        }
+        
+        return ok
+    }
+    
     
     func Gzone(position : (Int,Int)) -> Bool {
         var ok : Bool = true
@@ -273,64 +331,5 @@ struct Plateau : Plateau {
             }
         }
         return ok
-    }
-    
-
-    func Gligne(position : (Int,Int), p : Piece) -> Bool {
-        var ok : Bool = true
-        let l : Int = position.0
-        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
-        for j in 0 ..< 4 {
-            if !estVidePos(position : (l,j)) {
-                var f : String = self.grid[l][j].forme
-                d[f] = d[f] + 1
-            }
-        }
-        
-        for (k,v) in d {
-            if (v != 1){
-                ok = false
-            }
-        }
-        
-        return ok
-    }
-        
-    func Gcolonne(position : (Int,Int)) -> Bool {
-        
-    }
-
-    func Pligne (position : (Int, Int), p : Piece) -> Bool{
-        var ok : Bool = true
-        let l : Int = position.0
-        let pforme : String = p.forme
-        let pcolor : String = p.couleur
-        for j in 0 ..< 4 {
-            if !estVidePos(position : position))  {
-                if (self.grid[l][j].couleur == pcolor && self.grid[l][j].forme == pforme){
-                    ok = false
-                }
-            }
-        }
-        return ok
-    }
-
-    func Pcolonne (position : (Int, Int), p : Piece) -> Bool {
-        var ok : Bool = true
-        let c : Int = position.1
-        let pforme : String = p.forme
-        let pcolor : String = p.couleur
-        for i in 0 ..< 4 {
-            if !estVidePos(position : position) {
-                if self.grid[i][c].couleur == pcolor && self.grid[i][c].forme == pforme {
-                    ok = false
-                }
-            }
-        }
-        return ok
-    }
-    
-    func Pzone (position : (Int, Int), p : Piece) -> Bool {
-    
     }
 }
