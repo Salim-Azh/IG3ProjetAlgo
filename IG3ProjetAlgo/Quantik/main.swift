@@ -1,3 +1,5 @@
+
+
 func demandePosition() -> (Int,Int) { //fonction qui demande la position à l'utilisateur
     
     var B : Bool = false
@@ -78,7 +80,7 @@ func demandeForme() -> String { // Fonction qui demande la forme de la pièce à
         
         let forme : String? = readLine() // Le joueur rentre la pièce qu'il veut placer
         
-        if let forme = forme, forme == "Cylindre" || forme == "Pyramide" || forme == "Carre" || forme == "Sphere "{
+        if let forme = forme, forme == "Cylindre" || forme == "Pyramide" || forme == "Carre" || forme == "Sphere"{
             
             A = true // Si la pièce existe on sort du while et on continue, sinon on rentre une autre pièce
             

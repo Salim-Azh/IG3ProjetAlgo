@@ -696,7 +696,7 @@ struct Plateau : TPlateau {
         
         // Si le joueur gagne sur une ligne ou colonne ou zone ou que son adversaire ne peut plus jouer alorson retourne vrai
         
-        return Gzone(position : position) || Gligne(position : position) || Gzone(position : position) || !peutJouer(j : j_adverse)
+        return Gzone(position : position) || Gligne(position : position) || Gcolonne(position : position) || !peutJouer(j : j_adverse)
         
     }
     
@@ -873,4 +873,3 @@ struct Plateau : TPlateau {
     }
     
 }
-
