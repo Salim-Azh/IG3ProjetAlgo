@@ -43,7 +43,7 @@ protocol Joueur {
     var pieces : [Piece] { get set }
     
     //Un joueur est definit par un numéro de joueur et un lot de pieces, la fonction init fait donc appel a SetLotDePieces. Le joueur 1 aura automatiquement les blancs et le 2 les rouges.
-    init(numero : Int ,description : String, pieces : [Piece])
+    init(numero : Int ,description : String)
     
     //Supprime la piece du lot de piece du joueur
     mutating func SupprimerPiece (p : Piece)
@@ -66,7 +66,7 @@ struct Joueur : Joueur {
     init(numero : Int,description : String){ // initialisation d'un joueur qui a un numero et une description
         self.numero = numero
         self.description = description
-        self.pieces = pieces
+        self.pieces = setLotDePieces()
     }
 
     private func getIndex (pieces : [Piece], p : Piece){
@@ -83,7 +83,7 @@ struct Joueur : Joueur {
     
     mutating func SupprimerPiece (p : Piece){
         if self.PossedePiece(p : p) {
-            self.pieces = self.pieces.remove(at : getIndex (pieces : self.pieces, p : p) )
+            self.pieces = self.pieces.remove(at : getIndex(pieces : self.pieces, p : p))
         }
     }
     
@@ -243,7 +243,9 @@ struct Plateau : Plateau {
     
     func Pcolonne (position : (Int, Int), p : Piece) -> Bool {
         var ok : Bool = true
+        // colonne testee
         let c : Int = position.1
+        // Forme et couleur de la piece testee
         let pforme : String = p.forme
         let pcolor : String = p.couleur
         for i in 0 ..< 4 {
@@ -253,6 +255,7 @@ struct Plateau : Plateau {
                 }
             }
         }
+        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la colonne retourne false
         return ok
     }
     
@@ -268,6 +271,7 @@ struct Plateau : Plateau {
                 }
             }
         }
+        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la colonne retourne false
         return ok
     }
     
@@ -293,12 +297,12 @@ struct Plateau : Plateau {
                 }
             }
         }
+        // Si la couleur et la forme de la piece sont les memes que celle d'une autre piece dans la colonne retourne false
         return ok
     }
     
     func peutJouer (j : Joueur) -> Bool {
         var ok : Bool = false
-        
         while ok == false{
             for pion in j.pieces {
                 for (x in 0 ..< 4){
@@ -320,7 +324,6 @@ struct Plateau : Plateau {
         return Gzone(position : position) || Gligne(position : position) || Gzone(position : position) || !peutJouer(j : j_adverse)
     }
     
-    
     func Gcolonne(position : (Int,Int), p : Piece) -> Bool {
         var ok : Bool = true
         let c : Int = position.1
@@ -339,8 +342,6 @@ struct Plateau : Plateau {
         return ok
     }
     
-    
-    
     func Gligne(position : (Int,Int)) -> Bool {
         var ok : Bool = true
         let l : Int = position.0
@@ -357,10 +358,8 @@ struct Plateau : Plateau {
                 ok = false
             }
         }
-        
         return ok
     }
-    
     
     func Gzone(position : (Int,Int)) -> Bool {
         var ok : Bool = true
