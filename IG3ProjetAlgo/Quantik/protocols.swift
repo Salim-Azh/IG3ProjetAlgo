@@ -57,6 +57,7 @@ protocol Joueur {
 
 // Structure de donnees du type JOUEUR
 struct Joueur : Joueur {
+    
     private(set) var numero : Int  // declaration de la propriete numero pour un joueur
     private(set) var description : String  // declaration de la propriete description pour un pion
     private(set) var pieces : [Piece]  // declaration de la propriete pieces pour un pion
@@ -104,6 +105,8 @@ struct Joueur : Joueur {
         return (nbOccurence (pieces : self.pieces, p : p)) > 0
     }
     
+    // Fonction initialement dans Piece mais deplacee dans Joueur car on doit pouvoir ajouter des pieces au joueur. De plus
+    // modifie le joueur donc concerne le joueur il est donc plu logique de la placer ici.
     func setLotDePieces () ->  [Piece]{
       //attribue a un joueur les pieces pour démarrer (deux cylindre, deux carrés, deux spheres et deux pyramides) sous forme de liste. Recupere le numéro du joueur pour savoir quelle couleur attribuer aux pieces
         if self.numero == 1 {
@@ -136,7 +139,7 @@ struct Joueur : Joueur {
 // Specification fonctionnelle du type PLATEAU
 protocol Plateau {
     
-    //Un plateau est un tableau (de taille 3  /NON : 4) de tableaux (de taille 3 /NON: 4) de types Piece ou nul.
+    //Un plateau est un tableau (de taille 3) de tableaux (de taille 3) de types Piece ou nul.
     //Il est initialisé entierement à nul. On repere une position dans le tableau grace a une
     //liste de 2 int, le premier donne la colonne et le deuxieme la ligne.
     init ()
@@ -193,10 +196,13 @@ struct Plateau : Plateau {
     private var grid : [[Piece?]]
     
     init() {
-        // tableau de taille 4 pas de taille 3 On peut faire comme on veut il ne faut pas imposer un tableau
+        // tableau de taille 4 pas de taille 3 On peut faire comme on veut il ne faut pas imposer un tableau.
+        // Specification modifiee pour la taille du plateau de 3 a 4
         self.grid = [Piece?](repeating : [Piece?](repeating : nil, count : 4), count : 4)
     }
     
+    // On a choisit de renvoyer un tableau vide si le plateau ne contient aucune Piece
+    // Warning : jamais utilisee
     func PositionsPieces () -> [(Int,Int)] {
         var posPieces : [(Int,Int)] = []
         for i in 0 ..< 4 {
@@ -211,7 +217,7 @@ struct Plateau : Plateau {
     
     //Selon votre sepcification ont doit renvoyer une Piece ou nul mais en commentaire vous dites qu'il faut renvoyer la couleur et le type. On a choisit de renvoyer la piece
     // Faut choisir
-    // Ne sert a rien jamais utilisee
+    // Warning : jamais utilisee
     func QuellePiece(position : (Int,Int)) -> Piece? {
         if estVidePos(position : position) {
             return nil
@@ -221,7 +227,6 @@ struct Plateau : Plateau {
         }
     }
     
-        //Peutjouer() ou place() il faut choisir ou faire la verification. Ca ne sert a rien de faire 2 fois
     mutating func place (position : (Int, Int), piece : Piece, joueur : Joueur) -> Bool {
         if estVidePos(position : position) && Pzone(position : position) && Pligne(postion : position) && Pcolonne(position : position) && j.PossedePiece(p : piece) {
             self.grid[postion.0][position.1] = piece
@@ -231,7 +236,6 @@ struct Plateau : Plateau {
             return false
         }
     }
-        
     
     func estVidePos(position : (Int,Int)) -> Bool {
         return self.grid[position.0][position.1] == nil
@@ -244,7 +248,7 @@ struct Plateau : Plateau {
         let pcolor : String = p.couleur
         for i in 0 ..< 4 {
             if !estVidePos(position : position) {
-                if self.grid[i][c].couleur == pcolor && self.grid[i][c].forme == pforme {
+                if self.grid[i][c].couleur != pcolor && self.grid[i][c].forme == pforme {
                     ok = false
                 }
             }
@@ -259,7 +263,7 @@ struct Plateau : Plateau {
         let pcolor : String = p.couleur
         for j in 0 ..< 4 {
             if !estVidePos(position : position)  {
-                if (self.grid[l][j].couleur == pcolor && self.grid[l][j].forme == pforme){
+                if (self.grid[l][j].couleur != pcolor && self.grid[l][j].forme == pforme){
                     ok = false
                 }
             }
@@ -268,23 +272,76 @@ struct Plateau : Plateau {
     }
     
     func Pzone (position : (Int, Int), p : Piece) -> Bool {
+        var ok : Bool = true
+        var x : Int = position.0
+        var y : Int = position.1
+        x = x - x%2 //on se place a l'abscisse de debut de zone
+        y = y - y%2 // on se place a l'ordonnee de debut de zone
+        // forme et couleur de la piece teste
+        let pforme : String = p.forme
+        let pcolor : String = p.couleur
+        // abscisse et ordonnee de fin de parcour de la zone
+        let endX : Int = x + 2
+        let endY : Int = y + 2
         
+        for i in x ..< endX {
+            for j in y ..< endY {
+                if !estVidePos(position : (i,j)) {
+                    if (self.grid[i][j].couleur != pcolor && self.grid[i][j].forme == pforme){
+                        ok = false
+                    }
+                }
+            }
+        }
+        return ok
     }
-    //Verifie les pieces disponibles du joueur et si il peut en placer
-    //au moins une, revoie true, false sinon
+    
     func peutJouer (j : Joueur) -> Bool {
-    
-    }
-    
-    func aGagne() -> Bool {
-        return (Gzone() && Gligne() && Gzone()) || !peutJouer()
-    }
-    
-    func Gcolonne(position : (Int,Int)) -> Bool {
+        var ok : Bool = false
         
+        while ok == false{
+            for pion in j.pieces {
+                for (x in 0 ..< 4){
+                    for (y in 0 ..< 4){
+                        if Pligne (position : (x, y), p : pion) && Pcolonne (position : (x, y), p : pion) && Pzone (position : (x, y), p : pion) {
+                            ok = true
+                        }
+                    }
+                }
+            }
+        }
+        return ok
     }
     
-    func Gligne(position : (Int,Int), p : Piece) -> Bool {
+    // Ajout de position car sinon il nous manque le parmaetre position pour les fonctions Gzone
+    // Gligne et Gcolonne.
+    // Ajout de j_adverse sinon on peut pas tester si le joueur adverse ne peut pas jouer.
+    func aGagne(position : (Int,Int) j_adverse : Joueur) -> Bool {
+        return Gzone(position : position) || Gligne(position : position) || Gzone(position : position) || !peutJouer(j : j_adverse)
+    }
+    
+    
+    func Gcolonne(position : (Int,Int), p : Piece) -> Bool {
+        var ok : Bool = true
+        let c : Int = position.1
+        var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
+        for i in 0 ..< 4 {
+            if !estVidePos(position : (i,c)) {
+                var f : String = self.grid[i][c].forme
+                d[f] = d[f] + 1
+            }
+        }
+        for (k,v) in d {
+            if (v != 1){
+                ok = false
+            }
+        }
+        return ok
+    }
+    
+    
+    
+    func Gligne(position : (Int,Int)) -> Bool {
         var ok : Bool = true
         let l : Int = position.0
         var d : [String: Int] = ["Carre": 0,"Cylindre": 0 , "Sphere": 0,"Pyramide": 0]
